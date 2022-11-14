@@ -8,28 +8,28 @@ body,
 }
 
 .legend {
-  padding: 10px;
-  line-height: 18px;
+  padding: 12px;
+  line-height: 19px;
   color: #555;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 7px;
 }
 
 .legend i {
   float: left;
-  width: 18px;
-  height: 18px;
-  margin-right: 8px;
-  opacity: 0.7;
+  width: 21px;
+  height: 21px;
+  margin-right: 9px;
+  opacity: 0.74;
 }
 
 .leaflet-bottom.leaflet-left {
-  width: 90%;
+  width: 88%;
 }
 
 .leaflet-control-container .leaflet-timeline-controls {
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }

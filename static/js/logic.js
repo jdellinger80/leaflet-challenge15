@@ -1,3 +1,5 @@
+ // - setup
+ 
  const url_quakes = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
     const url_plates = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json';
 
@@ -19,7 +21,7 @@
         [89,'#FF3300','74-89'],     //  orange
         [89,'#FF0000','89+']]       // real red
 
-    // -
+    // - builds
     function init()
     {
         buildLayers();
@@ -28,7 +30,7 @@
         buildLegend(baseMap);
     };
 
-    // -
+    // - layer matrix
     function buildLayers()
     {
         // street layer
@@ -36,22 +38,24 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         });
 
+   // toon layer
+        watercolorLayer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            subdomains: 'abcd', minZoom: 1, maxZoom: 19, ext: 'jpg'
+        });
+
+
         // dark layer
         darkLayer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            subdomains: 'abcd', minZoom: 1, maxZoom: 16, ext: 'png'
+            subdomains: 'abcd', minZoom: 1, maxZoom: 19, ext: 'png'
         });
 
         // topography layer
-        topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17,
+        topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 19,
             attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
         });
 
-        // toon layer
-        watercolorLayer = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            subdomains: 'abcd', minZoom: 1, maxZoom: 16, ext: 'jpg'
-        });
 
         // plates layer
         platesLayer = new L.layerGroup();
@@ -60,7 +64,7 @@
         quakesLayer = new L.layerGroup();
     }
 
-     // -
+     // - overlays
     function buildOverlays()
     {
         d3.json(url_plates).then(function(plate_data) {              
@@ -72,11 +76,11 @@
         });
 
         overlays = {
-            '<span style=font-size:16px>Techtonic Plates</span>': platesLayer,
-            '<span style=font-size:16px>Earthquake Data</span>': quakesLayer};       
+            '<span style=font-size:18px>Techtonic Plates</span>': platesLayer,
+            '<span style=font-size:18px>Earthquake Data</span>': quakesLayer};       
     }
 
-    // -
+    // - base
     function buildBasemaps()
     {
         // define maps
@@ -86,10 +90,10 @@
             '<span style=font-size:18px>Topography</span>': topoLayer,
             '<span style=font-size:18px>Street</span>': streetLayer};
 
-        // map object with default
+        // map object defaults
         baseMap = L.map("map", { center: [36.00, -100.00], zoom: 5, layers:[streetLayer]});    
         
-        // bind layers
+        // layer binding
         L.control.layers(basemaps, overlays, {
             collapsed: false,
             position: 'topright'
@@ -116,7 +120,7 @@
                 fillColor: getColor(depth),
                 radius: magnitude * 9000 + 1000,
                 stroke: true,                
-                weight: 0.2
+                weight: 0.22
             })
             .addTo(quakesLayer);
 
@@ -142,7 +146,7 @@
       }
 
     function buildLegend(baseMap) {
-        // build table
+        // build table intrastructure
         var legend = L.control({position: 'bottomright'});
         var div = L.DomUtil.create('table', 'depth_legend');
 
@@ -152,7 +156,7 @@
                 color = colordepth[i][1];                
                 descript = colordepth[i][2];
 
-                div.innerHTML += `<tr style=font-size:15px><td bgcolor=${color}>&nbsp;&nbsp;&nbsp;</td><td align=right bgcolor=white><b>${descript} km</b></td></tr>`
+                div.innerHTML += `<tr style=font-size:16px><td bgcolor=${color}>&nbsp;&nbsp;&nbsp;</td><td align=right bgcolor=white><b>${descript} km</b></td></tr>`
             }
             return div;;}
 
